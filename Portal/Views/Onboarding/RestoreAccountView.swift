@@ -11,8 +11,8 @@ import Factory
 
 struct RestoreAccountView: View {
     @FocusState private var isFocused: Bool
-    @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel = RestoreAccountViewModel()
+    @EnvironmentObject private var navigation: NavigationStack
     @ObservedObject private var viewState = Container.viewState()
     
     var body: some View {
@@ -26,7 +26,7 @@ struct RestoreAccountView: View {
                 ZStack {
                     HStack {
                         PButton(config: .onlyIcon(Asset.caretLeftIcon), style: .free, size: .medium, enabled: true) {
-                            presentationMode.wrappedValue.dismiss()
+                            navigation.pop()
                         }
                         .frame(width: 20)
                         
@@ -91,24 +91,13 @@ struct RestoreAccountView: View {
                     .background(Color.black)
                     .cornerRadius(12)
                     
-                    HStack(spacing: 16) {
-                        PButton(
-                            config: .labelAndIconLeft(label: "Paste", icon: Asset.pasteIcon),
-                            style: .outline,
-                            size: .medium,
-                            enabled: true
-                        ) {
-                            viewModel.pasteFromClipboard()
-                        }
-                        
-                        PButton(
-                            config: .labelAndIconLeft(label: "Scan", icon: Asset.scanIcon),
-                            style: .outline,
-                            size: .medium,
-                            enabled: true
-                        ) {
-                            viewState.showInContextScanner = true
-                        }
+                    PButton(
+                        config: .labelAndIconLeft(label: "Paste", icon: Asset.pasteIcon),
+                        style: .outline,
+                        size: .medium,
+                        enabled: true
+                    ) {
+                        viewModel.pasteFromClipboard()
                     }
                 }
                 .padding(.horizontal)
